@@ -1,0 +1,39 @@
+{
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "project": "./tsconfig.level1.json"
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "warn",
+    "react/display-name": "off",
+    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-require-imports": "off",
+    "prefer-const": "warn"
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/types/**/*",
+        "src/config/**/*",
+        "src/adapters/**/*",
+        "src/contexts/**/*"
+      ]
+    },
+    {
+      "files": ["**/*"],
+      "excludedFiles": [
+        "src/types/**/*",
+        "src/config/**/*",
+        "src/adapters/**/*",
+        "src/contexts/**/*"
+      ],
+      "parserOptions": {
+        "project": null
+      }
+    }
+  ]
+}

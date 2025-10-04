@@ -1,0 +1,82 @@
+version: 1.0
+runtime: docker
+build:
+  commands:
+    pre-build:
+      - echo "Pre-build phase"
+    build:
+      - echo "Build phase handled by Dockerfile"
+    post-build:
+      - echo "Post-build phase"
+run:
+  runtime-version: latest
+  command: npm start
+  network:
+    port: 8080
+    env: PORT
+  env:
+    # ======================================
+    # Core Configuration
+    # ======================================
+    - name: NODE_ENV
+      value: production
+    - name: BASE_URL
+      value: "https://git-gallery.com" # TODO: Update with your production domain
+
+    # ======================================
+    # AWS Configuration
+    # ======================================
+    - name: AWS_REGION
+      value: us-east-1
+    # Note: For production, use IAM roles instead of keys when possible
+    # - name: AWS_ACCESS_KEY_ID
+    #   value: "your_access_key"
+    # - name: AWS_SECRET_ACCESS_KEY
+    #   value: "your_secret_key"
+
+    # ======================================
+    # S3 Buckets
+    # ======================================
+    - name: S3_GIT_MOSAICS
+      value: "git-mosaics"
+    - name: FEEDBACK_S3_BUCKET
+      value: "git-gallery-feedback" # TODO: Update with your feedback bucket
+    - name: ORBIT_S3_BUCKET
+      value: "git-gallery-orbit" # TODO: Update with your orbit bucket
+    - name: FILETREE_CACHE_BUCKET
+      value: "code-cosmos-filetree-cache"
+    - name: AWS_S3_BUCKET
+      value: "code-city-licenses" # Legacy - for license validation
+
+    # ======================================
+    # GitHub Configuration
+    # ======================================
+    # TODO: Store these in AWS Secrets Manager and reference them
+    # - name: GITHUB_TOKEN
+    #   value: "your_github_token"
+    # - name: GITHUB_CLIENT_ID
+    #   value: "your_client_id"
+    # - name: GITHUB_CLIENT_SECRET
+    #   value: "your_client_secret"
+    # - name: GITHUB_RELEASES_READONLY_TOKEN
+    #   value: "your_releases_token"
+
+    # ======================================
+    # Authentication
+    # ======================================
+    - name: NEXTAUTH_URL
+      value: "https://git-gallery.com" # TODO: Update with your production domain
+    # TODO: Store these in AWS Secrets Manager
+    # - name: NEXTAUTH_SECRET
+    #   value: "your_nextauth_secret"
+    # - name: ROOM_TOKEN_SECRET
+    #   value: "your_room_secret"
+
+    # ======================================
+    # Admin Configuration (Optional)
+    # ======================================
+    # TODO: Store these in AWS Secrets Manager if using admin features
+    # - name: ORBIT_ADMIN_SECRET
+    #   value: "your_admin_secret"
+    # - name: ADMIN_API_KEY
+    #   value: "your_api_key"

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [],
+  "project": [
+    "app/**/*.{ts,tsx,js,jsx}",
+    "pages/**/*.{ts,tsx,js,jsx}",
+    "components/**/*.{ts,tsx,js,jsx}",
+    "lib/**/*.{ts,tsx,js,jsx}",
+    "src/**/*.{ts,tsx,js,jsx}"
+  ],
+  "ignore": ["**/*.test.*", "**/*.spec.*", ".next/**", "out/**"],
+  "ignoreDependencies": ["next"]
+}

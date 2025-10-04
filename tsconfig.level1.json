@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "include": [
+    "src/types/**/*",
+    "src/config/**/*",
+    "src/adapters/**/*",
+    "src/contexts/**/*"
+  ],
+  "exclude": ["node_modules", "dist", ".next"]
+}

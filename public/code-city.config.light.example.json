@@ -1,0 +1,57 @@
+{
+  "$schema": "https://codecity.dev/schema/config.json",
+  "version": "1.0",
+  "display": {
+    "title": "Light Theme Example",
+    "description": "Example configuration using the light theme preset"
+  },
+  "theme": {
+    "background": {
+      "primary": "#ffffff",
+      "secondary": "#f8fafc",
+      "tertiary": "#f1f5f9",
+      "hover": "#e2e8f0"
+    },
+    "text": {
+      "primary": "#0f172a",
+      "secondary": "#334155",
+      "tertiary": "#64748b",
+      "quaternary": "#94a3b8",
+      "error": "#dc2626"
+    },
+    "border": {
+      "default": "#e2e8f0",
+      "hover": "#cbd5e1",
+      "accent": "#2563eb"
+    },
+    "status": {
+      "owner": {
+        "text": "#d97706",
+        "background": "rgba(217, 119, 6, 0.1)"
+      },
+      "maintainer": {
+        "text": "#2563eb",
+        "background": "rgba(37, 99, 235, 0.1)"
+      },
+      "contributor": {
+        "text": "#16a34a",
+        "background": "rgba(22, 163, 74, 0.1)"
+      },
+      "default": {
+        "text": "#64748b",
+        "background": "rgba(100, 116, 139, 0.1)"
+      }
+    },
+    "loading": {
+      "spinner": "#2563eb",
+      "text": "#334155"
+    },
+    "button": {
+      "primary": {
+        "background": "#2563eb",
+        "hover": "#1d4ed8",
+        "text": "#ffffff"
+      }
+    }
+  }
+}

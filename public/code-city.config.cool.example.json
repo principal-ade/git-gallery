@@ -1,0 +1,57 @@
+{
+  "$schema": "https://codecity.dev/schema/config.json",
+  "version": "1.0",
+  "display": {
+    "title": "Cool Theme Example",
+    "description": "Example configuration using the cool theme preset with purple and teal vibes"
+  },
+  "theme": {
+    "background": {
+      "primary": "#0f0f23",
+      "secondary": "#1a1a3e",
+      "tertiary": "#2d2d5f",
+      "hover": "#404080"
+    },
+    "text": {
+      "primary": "#e0f2fe",
+      "secondary": "#bae6fd",
+      "tertiary": "#7dd3fc",
+      "quaternary": "#38bdf8",
+      "error": "#fb7185"
+    },
+    "border": {
+      "default": "#4c1d95",
+      "hover": "#6d28d9",
+      "accent": "#06b6d4"
+    },
+    "status": {
+      "owner": {
+        "text": "#fde047",
+        "background": "rgba(253, 224, 71, 0.2)"
+      },
+      "maintainer": {
+        "text": "#a78bfa",
+        "background": "rgba(167, 139, 250, 0.2)"
+      },
+      "contributor": {
+        "text": "#2dd4bf",
+        "background": "rgba(45, 212, 191, 0.2)"
+      },
+      "default": {
+        "text": "#7dd3fc",
+        "background": "rgba(125, 211, 252, 0.2)"
+      }
+    },
+    "loading": {
+      "spinner": "#06b6d4",
+      "text": "#bae6fd"
+    },
+    "button": {
+      "primary": {
+        "background": "#06b6d4",
+        "hover": "#0891b2",
+        "text": "#ffffff"
+      }
+    }
+  }
+}

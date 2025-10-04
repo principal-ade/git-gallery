@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Run incremental type checking
+echo "🔍 Running incremental type checking..."
+npm run typecheck:incremental
+
+# Run incremental linting
+echo "🧹 Running incremental linting..."
+npm run lint:incremental
+
+# Run lint-staged for staged files
+npx lint-staged

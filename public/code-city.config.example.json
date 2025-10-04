@@ -1,0 +1,171 @@
+{
+  "$schema": "https://codecity.dev/schema/config.json",
+  "version": "1.0",
+  "display": {
+    "title": "My Awesome Project",
+    "description": "A custom description for your code city",
+    "readme": {
+      "path": "docs/README.md",
+      "sections": {
+        "exclude": ["installation", "contributing"],
+        "include": ["overview", "features", "usage"]
+      }
+    },
+    "optOut": false,
+    "redirectToGitHub": false
+  },
+  "theme": {
+    "background": {
+      "primary": "#0f172a",
+      "secondary": "#1e293b",
+      "tertiary": "#334155",
+      "hover": "#475569"
+    },
+    "text": {
+      "primary": "#f1f5f9",
+      "secondary": "#cbd5e1",
+      "tertiary": "#94a3b8",
+      "quaternary": "#64748b",
+      "error": "#f87171"
+    },
+    "border": {
+      "default": "#334155",
+      "hover": "#475569",
+      "accent": "#3b82f6"
+    },
+    "status": {
+      "owner": {
+        "text": "#fbbf24",
+        "background": "rgba(251, 191, 36, 0.2)"
+      },
+      "maintainer": {
+        "text": "#60a5fa",
+        "background": "rgba(96, 165, 250, 0.2)"
+      },
+      "contributor": {
+        "text": "#4ade80",
+        "background": "rgba(74, 222, 128, 0.2)"
+      },
+      "default": {
+        "text": "#94a3b8",
+        "background": "rgba(148, 163, 184, 0.2)"
+      }
+    },
+    "loading": {
+      "spinner": "#3b82f6",
+      "text": "#cbd5e1"
+    },
+    "button": {
+      "primary": {
+        "background": "#3b82f6",
+        "hover": "#2563eb",
+        "text": "#ffffff"
+      }
+    }
+  },
+  "layout": {
+    "sidebarPosition": "left",
+    "defaultView": "readme",
+    "compactMode": false
+  },
+  "cityCouncil": {
+    "enabled": true,
+    "members": [
+      {
+        "username": "octocat",
+        "role": "Mayor",
+        "title": "Project Lead",
+        "description": "Oversees the strategic direction and community growth",
+        "avatar": "https://github.com/octocat.png",
+        "badge": {
+          "icon": "👑",
+          "color": "#ffd700"
+        },
+        "socialLinks": {
+          "twitter": "octocat",
+          "linkedin": "octocat",
+          "website": "https://octocat.dev"
+        }
+      },
+      {
+        "username": "defunkt",
+        "role": "Council Member",
+        "title": "Core Maintainer",
+        "description": "Maintains core functionality and reviews contributions",
+        "badge": {
+          "icon": "⚖️",
+          "color": "#c0c0c0"
+        }
+      },
+      {
+        "username": "mojombo",
+        "role": "Advisor",
+        "title": "Technical Advisor",
+        "description": "Provides technical guidance and architectural oversight",
+        "badge": {
+          "icon": "🎓",
+          "color": "#cd7f32"
+        }
+      }
+    ],
+    "displayOptions": {
+      "showOnMainPage": true,
+      "maxDisplayed": 6,
+      "layout": "grid",
+      "showBadges": true,
+      "showDescriptions": true
+    }
+  },
+  "tutorials": {
+    "enabled": true,
+    "autoDiscover": true,
+    "discoveryDirectory": ".landmark-info",
+    "customTutorials": [
+      {
+        "name": "Getting Started",
+        "path": "docs/tutorials/getting-started.md",
+        "description": "Learn the basics of this project",
+        "icon": "🚀",
+        "order": 1
+      },
+      {
+        "name": "Advanced Usage",
+        "path": "docs/advanced-guide.md",
+        "description": "Deep dive into advanced features",
+        "icon": "⚡",
+        "order": 2
+      },
+      {
+        "name": "API Reference",
+        "path": ".landmark-info/api-guide.md",
+        "icon": "📚",
+        "order": 3
+      }
+    ],
+    "displayOptions": {
+      "showInSidebar": true,
+      "showDescriptions": true,
+      "showIcons": true,
+      "maxDisplayed": 10,
+      "sortBy": "order"
+    }
+  },
+  "integrations": {
+    "analytics": {
+      "enabled": false,
+      "trackingId": ""
+    },
+    "customLinks": [
+      {
+        "title": "Documentation",
+        "url": "https://docs.example.com",
+        "icon": "📚"
+      },
+      {
+        "title": "Demo",
+        "url": "https://demo.example.com",
+        "icon": "🚀"
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "extends": "./.eslintrc.level1.json",
+  "parserOptions": {
+    "project": "./tsconfig.level2.json"
+  },
+  "overrides": [
+    {
+      "files": [
+        "src/types/**/*",
+        "src/config/**/*",
+        "src/adapters/**/*",
+        "src/contexts/**/*",
+        "src/hooks/**/*",
+        "src/lib/**/*"
+      ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-unused-vars": "error",
+        "prefer-const": "error"
+      }
+    }
+  ]
+}

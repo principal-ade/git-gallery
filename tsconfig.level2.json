@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.level1.json",
+  "include": [
+    "src/types/**/*",
+    "src/config/**/*",
+    "src/adapters/**/*",
+    "src/contexts/**/*",
+    "src/hooks/**/*",
+    "src/lib/**/*"
+  ]
+}

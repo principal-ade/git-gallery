@@ -1,0 +1,53 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "entry": [
+    "src/app/**/**/page.{tsx,jsx,ts,js}",
+    "src/app/**/**/layout.{tsx,jsx,ts,js}",
+    "src/app/**/**/route.{ts,js}"
+  ],
+  "project": ["src/**/*.{ts,tsx,js,jsx}"],
+  "ignore": [
+    "**/*.test.*",
+    "**/*.spec.*",
+    "__tests__/**",
+    ".next/**",
+    "out/**",
+    "dist/**",
+    "node_modules/**",
+    "src/lib/electron-feedback-client.example.ts",
+    "test-*.js",
+    "verify-*.js",
+    "analyze-*.ts"
+  ],
+  "ignoreDependencies": ["eslint-config-next"],
+  "next": {
+    "entry": [
+      "next.config.{js,ts,mjs,mts}",
+      "src/app/**/*.{js,jsx,ts,tsx}",
+      "src/pages/**/*.{js,jsx,ts,tsx}"
+    ]
+  },
+  "jest": {
+    "config": ["jest.config.js"],
+    "entry": ["__tests__/**/*.{test,spec}.{js,jsx,ts,tsx}"]
+  },
+  "typescript": {
+    "config": ["tsconfig.json", "tsconfig.strict.json"]
+  },
+  "eslint": {
+    "config": ["eslint.config.js"]
+  },
+  "tailwind": {
+    "config": ["tailwind.config.js"]
+  },
+  "postcss": {
+    "config": ["postcss.config.mjs"]
+  },
+  "ignoreBinaries": [],
+  "ignoreExportsUsedInFile": {
+    "interface": true,
+    "type": true,
+    "enum": true
+  },
+  "ignoreWorkspaces": []
+}

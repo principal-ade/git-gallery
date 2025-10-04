@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.level2.json",
+  "include": [
+    "src/types/**/*",
+    "src/config/**/*",
+    "src/adapters/**/*",
+    "src/contexts/**/*",
+    "src/hooks/**/*",
+    "src/lib/**/*",
+    "src/utils/**/*",
+    "src/stores/**/*",
+    "src/component-tabs/**/*"
+  ]
+}
