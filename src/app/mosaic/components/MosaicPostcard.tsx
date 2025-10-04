@@ -55,6 +55,9 @@ interface MosaicPostcardProps {
     extension: string,
     config?: FileSuffixConfig,
   ) => void;
+  showButtons?: boolean;
+  onGradientToggle?: (showGradient: boolean) => void;
+  externalShowGradient?: boolean;
 }
 
 // Helper function to get establishment date
@@ -78,11 +81,28 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
   onMapShare,
   onGenerateMapImageRef,
   colorConfig,
+  showButtons = true,
+  onGradientToggle,
+  externalShowGradient,
   onFileClick,
 }) => {
   const theme = useMosaicTheme();
   const [owner, repoName] = repoPath.split("/");
-  const [showGradient, setShowGradient] = useState(true);
+  const [internalShowGradient, setInternalShowGradient] = useState(true);
+
+  // Use external gradient state if provided, otherwise use internal
+  const showGradient =
+    externalShowGradient !== undefined
+      ? externalShowGradient
+      : internalShowGradient;
+  const handleGradientToggle = () => {
+    const newValue = !showGradient;
+    if (onGradientToggle) {
+      onGradientToggle(newValue);
+    } else {
+      setInternalShowGradient(newValue);
+    }
+  };
 
   // Hook to convert the postcard to PNG
   const [, convertToPng, postcardRef] = useToPng<HTMLDivElement>({
@@ -623,49 +643,17 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
       </div>
 
       {/* Action Buttons - Outside the postcard */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "1rem",
-          marginTop: "2.5rem",
-        }}
-      >
-        <button
-          onClick={() => setShowGradient(!showGradient)}
+      {showButtons && (
+        <div
           style={{
-            padding: "0.5rem 1rem",
-            backgroundColor: theme.colors.backgroundSecondary,
-            border: `1px solid ${theme.colors.border}`,
-            borderRadius: "0.375rem",
-            color: theme.colors.text,
-            cursor: "pointer",
             display: "flex",
-            alignItems: "center",
-            gap: "0.5rem",
-            fontSize: theme.fontSizes.sm,
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor =
-              theme.colors.backgroundTertiary;
-            e.currentTarget.style.borderColor = theme.colors.primary;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor =
-              theme.colors.backgroundSecondary;
-            e.currentTarget.style.borderColor = theme.colors.border;
+            justifyContent: "center",
+            gap: "1rem",
+            marginTop: "2.5rem",
           }}
         >
-          <Palette size={14} />
-          {showGradient ? "Hide Gradient" : "Show Gradient"}
-        </button>
-
-        {repoPath && (
-          <a
-            href={`https://github.com/${repoPath}`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <button
+            onClick={handleGradientToggle}
             style={{
               padding: "0.5rem 1rem",
               backgroundColor: theme.colors.backgroundSecondary,
@@ -678,7 +666,6 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
               gap: "0.5rem",
               fontSize: theme.fontSizes.sm,
               transition: "all 0.2s ease",
-              textDecoration: "none",
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor =
@@ -691,11 +678,46 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
               e.currentTarget.style.borderColor = theme.colors.border;
             }}
           >
-            <Github size={14} />
-            View on GitHub
-          </a>
-        )}
-      </div>
+            <Palette size={14} />
+            {showGradient ? "Hide Gradient" : "Show Gradient"}
+          </button>
+
+          {repoPath && (
+            <a
+              href={`https://github.com/${repoPath}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                padding: "0.5rem 1rem",
+                backgroundColor: theme.colors.backgroundSecondary,
+                border: `1px solid ${theme.colors.border}`,
+                borderRadius: "0.375rem",
+                color: theme.colors.text,
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.5rem",
+                fontSize: theme.fontSizes.sm,
+                transition: "all 0.2s ease",
+                textDecoration: "none",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  theme.colors.backgroundTertiary;
+                e.currentTarget.style.borderColor = theme.colors.primary;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor =
+                  theme.colors.backgroundSecondary;
+                e.currentTarget.style.borderColor = theme.colors.border;
+              }}
+            >
+              <Github size={14} />
+              View on GitHub
+            </a>
+          )}
+        </div>
+      )}
     </div>
   );
 };

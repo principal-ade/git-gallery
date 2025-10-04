@@ -15,6 +15,7 @@ import {
   useMosaicTheme,
 } from "./mosaic/components/MosaicTheme";
 import { GitHubService } from "../services/githubService";
+import Link from "next/link";
 
 interface GalleryItem {
   owner: string;
@@ -306,38 +307,70 @@ function GitGalleryContent() {
           zIndex: 10,
         }}
       >
-        {/* View Gallery Button - Top Left */}
-        <a
-          href="/gallery"
-          style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "0.375rem",
-            backgroundColor: theme.colors.backgroundSecondary,
-            color: theme.colors.textSecondary,
-            padding: "0.5rem 1rem",
-            borderRadius: theme.radius.lg,
-            fontSize: theme.fontSizes.sm,
-            fontWeight: theme.fontWeights.medium,
-            textDecoration: "none",
-            border: `1px solid ${theme.colors.border}`,
-            transition: "all 0.2s ease",
-            cursor: "pointer",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor =
-              theme.colors.backgroundTertiary;
-            e.currentTarget.style.color = theme.colors.text;
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor =
-              theme.colors.backgroundSecondary;
-            e.currentTarget.style.color = theme.colors.textSecondary;
-          }}
-        >
-          <Grid3x3 size={14} />
-          View Gallery
-        </a>
+        {/* Navigation Buttons - Top Left */}
+        <div style={{ display: "flex", gap: "0.75rem" }}>
+          <a
+            href="/gallery"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              backgroundColor: theme.colors.backgroundSecondary,
+              color: theme.colors.textSecondary,
+              padding: "0.5rem 1rem",
+              borderRadius: theme.radius.lg,
+              fontSize: theme.fontSizes.sm,
+              fontWeight: theme.fontWeights.medium,
+              textDecoration: "none",
+              border: `1px solid ${theme.colors.border}`,
+              transition: "all 0.2s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor =
+                theme.colors.backgroundTertiary;
+              e.currentTarget.style.color = theme.colors.text;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor =
+                theme.colors.backgroundSecondary;
+              e.currentTarget.style.color = theme.colors.textSecondary;
+            }}
+          >
+            <Grid3x3 size={14} />
+            Community Gallery
+          </a>
+          <Link
+            href="/my-galleries"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              backgroundColor: theme.colors.backgroundSecondary,
+              color: theme.colors.textSecondary,
+              padding: "0.5rem 1rem",
+              borderRadius: theme.radius.lg,
+              fontSize: theme.fontSizes.sm,
+              fontWeight: theme.fontWeights.medium,
+              textDecoration: "none",
+              border: `1px solid ${theme.colors.border}`,
+              transition: "all 0.2s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor =
+                theme.colors.backgroundTertiary;
+              e.currentTarget.style.color = theme.colors.text;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor =
+                theme.colors.backgroundSecondary;
+              e.currentTarget.style.color = theme.colors.textSecondary;
+            }}
+          >
+            My Galleries
+          </Link>
+        </div>
 
         {/* Create Mosaic Button - Top Right */}
         <button
