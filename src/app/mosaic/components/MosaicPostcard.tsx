@@ -95,6 +95,18 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
     externalShowGradient !== undefined
       ? externalShowGradient
       : internalShowGradient;
+  const gradientBackground = showGradient
+    ? `linear-gradient(180deg,
+        #0A0F1E 0%,
+        #1E2841 12%,
+        #232D46 28%,
+        #263049 40%,
+        #28324B 50%,
+        #263049 60%,
+        #232D46 72%,
+        #1E2841 88%,
+        #0A0F1E 100%)`
+    : `linear-gradient(180deg, #212738 0%, #212738 100%)`;
   const handleGradientToggle = () => {
     const newValue = !showGradient;
     if (onGradientToggle) {
@@ -165,57 +177,25 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
     : 0;
 
   return (
-    <div style={{ maxWidth: "900px", margin: "0 auto" }}>
+    <div className="postcard-shell">
       {/* Postcard */}
       <div
         ref={postcardRef}
+        className="postcard"
         style={{
-          position: "relative",
-          backgroundColor: "#212738", // Keep the same solid background color
-          backgroundImage: showGradient
-            ? `linear-gradient(180deg, 
-            #0A0F1E 0%, 
-            #1E2841 12%, 
-            #232D46 28%, 
-            #263049 40%, 
-            #28324B 50%, 
-            #263049 60%, 
-            #232D46 72%, 
-            #1E2841 88%,
-            #0A0F1E 100%)`
-            : `linear-gradient(180deg, #212738 0%, #212738 100%)`,
-          borderRadius: 0,
+          backgroundColor: "#212738",
+          backgroundImage: gradientBackground,
           boxShadow: theme.colors.shadowXl,
           border: `2px solid ${theme.colors.border}`,
-          overflow: "hidden",
-          width: "100%",
-          aspectRatio: "2 / 1",
+          borderRadius: theme.radius.xl,
         }}
       >
         {/* Main Content with Padding */}
-        <div style={{ padding: "2rem", height: "100%" }}>
+        <div className="postcard-inner">
           {/* Responsive Grid Layout */}
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "2rem",
-              alignItems: "flex-start",
-              height: "100%",
-            }}
-          >
+          <div className="postcard-grid">
             {/* Left Side: Repository Info */}
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "1rem",
-                justifyContent: "space-between",
-                alignSelf: "stretch",
-                height: "100%",
-                position: "relative",
-              }}
-            >
+            <div className="postcard-info">
               {/* Top Section */}
               <div
                 style={{
@@ -495,12 +475,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
             </div>
 
             {/* Right Side: Mosaic Visualization */}
-            <div
-              style={{
-                position: "relative",
-                height: "100%",
-              }}
-            >
+            <div className="postcard-map">
               {loading ? (
                 <div
                   style={{
@@ -545,11 +520,12 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
               ) : cityData ? (
                 <div
                   style={{
-                    height: "380px",
-                    borderRadius: 0,
+                    flex: 1,
+                    minHeight: "100%",
+                    borderRadius: theme.radius.xl,
                     overflow: "hidden",
                     backgroundColor: theme.colors.background,
-                    border: `2px solid ${theme.colors.border}`,
+                    border: `1px solid ${theme.colors.border}`,
                     position: "relative",
                   }}
                 >
@@ -567,12 +543,13 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    height: "380px",
+                    minHeight: "100%",
                     color: theme.colors.textMuted,
                     textAlign: "center",
                     backgroundColor: theme.colors.backgroundTertiary,
                     borderRadius: theme.radius.xl,
                     border: `1px solid ${theme.colors.border}`,
+                    padding: "2rem",
                   }}
                 >
                   <div>
@@ -613,21 +590,104 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
           </div>
         )}
 
-        {/* Mobile-specific adjustments using CSS-in-JS media queries */}
         <style jsx>{`
-          @media (max-width: 1024px) {
+          .postcard-shell {
+            width: 100%;
+            max-width: min(100%, 960px);
+            margin: 0 auto;
+            padding: 0 clamp(0rem, 3vw, 1.5rem);
+          }
+
+          .postcard {
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            color: ${theme.colors.text};
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+          }
+
+          .postcard-inner {
+            padding: clamp(1.5rem, 3vw, 2.5rem);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+          }
+
+          .postcard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, minmax(0, 1fr));
+            gap: clamp(1.5rem, 2.75vw, 3rem);
+            align-items: stretch;
+            height: 100%;
+          }
+
+          .postcard-info {
+            grid-column: span 5;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(1rem, 2vw, 1.5rem);
+            justify-content: space-between;
+            position: relative;
+          }
+
+          .postcard-map {
+            grid-column: span 7;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: clamp(320px, 32vw, 420px);
+          }
+
+          .postcard-map :global(canvas),
+          .postcard-map :global(svg) {
+            width: 100%;
+            height: 100%;
+          }
+
+          @media (max-width: 1280px) {
+            .postcard-shell {
+              padding-left: clamp(0.5rem, 3vw, 1.5rem);
+              padding-right: clamp(0.5rem, 3vw, 1.5rem);
+            }
+
             .postcard-grid {
-              grid-template-columns: 1fr !important;
-              gap: 1.5rem !important;
+              grid-template-columns: repeat(1, minmax(0, 1fr));
+            }
+
+            .postcard-info,
+            .postcard-map {
+              grid-column: span 1;
+            }
+
+            .postcard-map {
+              order: 1;
+              min-height: clamp(280px, 48vw, 420px);
             }
 
             .postcard-info {
               order: 2;
             }
+          }
+
+          @media (max-width: 768px) {
+            .postcard-inner {
+              padding: clamp(1rem, 6vw, 1.75rem);
+            }
+
+            .postcard-info {
+              gap: clamp(0.75rem, 4vw, 1.25rem);
+            }
 
             .postcard-map {
-              order: 1;
-              min-height: 300px;
+              min-height: clamp(240px, 65vw, 360px);
+            }
+          }
+
+          @media (min-width: 1280px) {
+            .postcard {
+              aspect-ratio: 2 / 1;
             }
           }
 
