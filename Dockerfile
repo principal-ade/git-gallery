@@ -21,20 +21,8 @@ RUN apk add --no-cache \
     giflib-dev \
     pixman-dev
 
-# Copy package files for code-city-landing
-COPY code-city-landing/package.json code-city-landing/package-lock.json* ./code-city-landing/
-
-# Copy package files for core library
-COPY core/package.json ./core/
-
-# Install and build core library first
-WORKDIR /app/core
-COPY core/ ./
-RUN npm install
-RUN npm run build
-
-# Install dependencies for code-city-landing
-WORKDIR /app/code-city-landing
+# Copy package files
+COPY package.json package-lock.json* ./
 
 # First, install dependencies without scripts to avoid premature builds
 RUN npm ci --ignore-scripts
@@ -52,8 +40,8 @@ RUN npm rebuild
 # Run postinstall scripts after native dependencies are ready
 RUN npm run postinstall || true
 
-# Copy the rest of code-city-landing
-COPY code-city-landing/ ./
+# Copy the rest of the application
+COPY . ./
 
 # Build the Next.js app
 RUN npm run build
@@ -89,11 +77,8 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy package.json and package-lock.json
-COPY --from=builder /app/code-city-landing/package.json ./
-COPY --from=builder /app/code-city-landing/package-lock.json* ./
-
-# Copy the core library build
-COPY --from=builder /app/core ./core
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/package-lock.json* ./
 
 # Configure npm for private packages if token is provided
 RUN if [ -n "$NPM_TOKEN" ]; then \
@@ -108,8 +93,8 @@ RUN npm install --production --ignore-scripts
 RUN rm -f ~/.npmrc
 
 # Copy built app artifacts from builder
-COPY --from=builder /app/code-city-landing/.next ./.next
-COPY --from=builder /app/code-city-landing/public ./public
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
 
 # Ensure all files are owned by nextjs user
 USER root
