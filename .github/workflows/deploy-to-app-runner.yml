@@ -9,7 +9,6 @@ on:
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: principal-ade/git-gallery
-  APP_RUNNER_SERVICE_NAME: git-gallery
 
 jobs:
   deploy:
