@@ -56,14 +56,15 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${firaCode.variable} antialiased h-full`}
       >
-        <AuthSessionProvider>
-          <AuthRefreshProvider>
-            <ClientThemeProvider>
-              <MermaidInitializer />
-              {children}
-            </ClientThemeProvider>
-          </AuthRefreshProvider>
-        </AuthSessionProvider>
+        {/* Temporarily disabled auth - uncomment when you need authentication */}
+        {/* <AuthSessionProvider>
+          <AuthRefreshProvider> */}
+        <ClientThemeProvider>
+          <MermaidInitializer />
+          {children}
+        </ClientThemeProvider>
+        {/* </AuthRefreshProvider>
+        </AuthSessionProvider> */}
       </body>
     </html>
   );
