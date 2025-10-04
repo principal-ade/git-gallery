@@ -9,6 +9,8 @@ import {
   Linkedin,
   Download,
   History,
+  Palette,
+  Github,
 } from "lucide-react";
 import {
   HighlightLayer,
@@ -72,6 +74,7 @@ function RepoMosaicContent() {
   const [ownerTwitterHandle, setOwnerTwitterHandle] = useState<string | null>(
     null,
   );
+  const [showGradient, setShowGradient] = useState(true);
 
   // Get city data from file system tree
   const { cityData } = useCodeCityData({
@@ -480,21 +483,25 @@ function RepoMosaicContent() {
         style={{
           borderBottom: `1px solid ${theme.colors.border}`,
           backgroundColor: theme.colors.backgroundSecondary,
-          padding: "20px 40px",
+          padding: "20px",
         }}
       >
         <div
           style={{
             maxWidth: "1400px",
             margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "1fr auto 1fr",
-            alignItems: "center",
-            gap: "20px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "12px",
           }}
         >
-          {/* Left section - Git Gallery */}
-          <div>
+          {/* Top section - Git Gallery Title */}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
             <h1
               onClick={() => router.push("/")}
               style={{
@@ -517,13 +524,14 @@ function RepoMosaicContent() {
             </h1>
           </div>
 
-          {/* Right section - History and Share buttons */}
+          {/* Bottom section - History and Share buttons */}
           <div
             style={{
               display: "flex",
               gap: "12px",
               alignItems: "center",
-              justifyContent: "flex-end",
+              justifyContent: "center",
+              flexWrap: "wrap",
             }}
           >
             <button
@@ -609,19 +617,98 @@ function RepoMosaicContent() {
 
         {/* Main Mosaic Postcard */}
         {!error && (
-          <MosaicPostcard
-            repoPath={repoPath}
-            repoStats={repoStats || undefined}
-            cityData={cityData}
-            highlightLayers={highlightLayers}
-            loading={loading}
-            onShare={handlePostcardShare}
-            onGenerateImageRef={generateImageRef}
-            onMapShare={handleMapImageGenerated}
-            onGenerateMapImageRef={generateMapImageRef}
-            colorConfig={DEFAULT_FILE_CONFIGS}
-            onFileClick={handleFileClick}
-          />
+          <>
+            <MosaicPostcard
+              repoPath={repoPath}
+              repoStats={repoStats || undefined}
+              cityData={cityData}
+              highlightLayers={highlightLayers}
+              loading={loading}
+              onShare={handlePostcardShare}
+              onGenerateImageRef={generateImageRef}
+              onMapShare={handleMapImageGenerated}
+              onGenerateMapImageRef={generateMapImageRef}
+              colorConfig={DEFAULT_FILE_CONFIGS}
+              onFileClick={handleFileClick}
+              onGradientToggle={setShowGradient}
+              externalShowGradient={showGradient}
+            />
+
+            {/* Action Buttons */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                gap: "1rem",
+                marginTop: "2.5rem",
+              }}
+            >
+              <button
+                onClick={() => setShowGradient(!showGradient)}
+                style={{
+                  padding: "0.5rem 1rem",
+                  backgroundColor: theme.colors.backgroundSecondary,
+                  border: `1px solid ${theme.colors.border}`,
+                  borderRadius: "0.375rem",
+                  color: theme.colors.text,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  fontSize: theme.fontSizes.sm,
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    theme.colors.backgroundTertiary;
+                  e.currentTarget.style.borderColor = theme.colors.primary;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor =
+                    theme.colors.backgroundSecondary;
+                  e.currentTarget.style.borderColor = theme.colors.border;
+                }}
+              >
+                <Palette size={14} />
+                {showGradient ? "Hide Gradient" : "Show Gradient"}
+              </button>
+
+              {repoPath && (
+                <a
+                  href={`https://github.com/${repoPath}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    padding: "0.5rem 1rem",
+                    backgroundColor: theme.colors.backgroundSecondary,
+                    border: `1px solid ${theme.colors.border}`,
+                    borderRadius: "0.375rem",
+                    color: theme.colors.text,
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    fontSize: theme.fontSizes.sm,
+                    transition: "all 0.2s ease",
+                    textDecoration: "none",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      theme.colors.backgroundTertiary;
+                    e.currentTarget.style.borderColor = theme.colors.primary;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor =
+                      theme.colors.backgroundSecondary;
+                    e.currentTarget.style.borderColor = theme.colors.border;
+                  }}
+                >
+                  <Github size={14} />
+                  View on GitHub
+                </a>
+              )}
+            </div>
+          </>
         )}
       </div>
 

@@ -394,6 +394,7 @@ function GitGalleryContent() {
       <section
         style={{
           padding: "2rem 1.5rem 1rem",
+          paddingTop: "6rem",
           maxWidth: "1200px",
           margin: "0 auto",
           textAlign: "center",

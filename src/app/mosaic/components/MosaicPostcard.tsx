@@ -55,7 +55,6 @@ interface MosaicPostcardProps {
     extension: string,
     config?: FileSuffixConfig,
   ) => void;
-  showButtons?: boolean;
   onGradientToggle?: (showGradient: boolean) => void;
   externalShowGradient?: boolean;
 }
@@ -81,7 +80,6 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
   onMapShare,
   onGenerateMapImageRef,
   colorConfig,
-  showButtons = true,
   onGradientToggle,
   externalShowGradient,
   onFileClick,
@@ -213,7 +211,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                     <div style={{ textAlign: "center" }}>
                       <h2
                         style={{
-                          fontSize: theme.fontSizes["4xl"],
+                          fontSize: "clamp(1.25rem, 3.5vw, 2.25rem)",
                           fontWeight: theme.fontWeights.bold,
                           lineHeight: "1.2",
                           marginBottom: "0.25rem",
@@ -231,7 +229,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                       <p
                         style={{
                           color: theme.colors.text,
-                          fontSize: theme.fontSizes.lg,
+                          fontSize: "clamp(0.75rem, 1.75vw, 1.125rem)",
                           fontWeight: 400,
                           margin: "0 0 1rem 0",
                           lineHeight: "1.5",
@@ -284,7 +282,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "0.25rem",
-                      fontSize: theme.fontSizes.sm,
+                      fontSize: "clamp(0.65rem, 1.35vw, 0.875rem)",
                       color: theme.colors.textMuted,
                       opacity: 0.7,
                     }}
@@ -298,7 +296,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                 <div
                   style={{
                     textAlign: "center",
-                    fontSize: theme.fontSizes.base,
+                    fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                     color: theme.colors.textSecondary,
                     opacity: 0.8,
                     lineHeight: "1.5",
@@ -313,7 +311,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                     style={{
                       fontWeight: theme.fontWeights.medium,
                       marginTop: "0.25rem",
-                      fontSize: theme.fontSizes.lg,
+                      fontSize: "clamp(0.75rem, 1.75vw, 1.125rem)",
                     }}
                   >
                     by {owner}
@@ -345,7 +343,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                         <Star size={20} color={theme.colors.textSecondary} />
                         <span
                           style={{
-                            fontSize: theme.fontSizes.base,
+                            fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                             fontWeight: theme.fontWeights.medium,
                             color: theme.colors.textSecondary,
                           }}
@@ -367,7 +365,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                         <Users size={20} color={theme.colors.textSecondary} />
                         <span
                           style={{
-                            fontSize: theme.fontSizes.base,
+                            fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                             fontWeight: theme.fontWeights.medium,
                             color: theme.colors.textSecondary,
                           }}
@@ -415,7 +413,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                             <Scale size={20} color={badgeColor} />
                             <span
                               style={{
-                                fontSize: theme.fontSizes.base,
+                                fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                                 fontWeight: theme.fontWeights.medium,
                                 color: badgeColor,
                               }}
@@ -438,7 +436,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                         <Layers size={20} color={theme.colors.textSecondary} />
                         <span
                           style={{
-                            fontSize: theme.fontSizes.base,
+                            fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                             fontWeight: theme.fontWeights.medium,
                             color: theme.colors.textSecondary,
                           }}
@@ -460,7 +458,7 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
                         <File size={20} color={theme.colors.textSecondary} />
                         <span
                           style={{
-                            fontSize: theme.fontSizes.base,
+                            fontSize: "clamp(0.7rem, 1.5vw, 1rem)",
                             fontWeight: theme.fontWeights.medium,
                             color: theme.colors.textSecondary,
                           }}
@@ -593,43 +591,50 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
         <style jsx>{`
           .postcard-shell {
             width: 100%;
-            max-width: min(100%, 960px);
             margin: 0 auto;
-            padding: 0 clamp(0rem, 3vw, 1.5rem);
+            padding: 0;
           }
 
           .postcard {
             position: relative;
             overflow: hidden;
             width: 100%;
+            aspect-ratio: 2 / 1;
             display: flex;
             flex-direction: column;
             color: ${theme.colors.text};
-            transition: box-shadow 0.2s ease, transform 0.2s ease;
+            transition:
+              box-shadow 0.2s ease,
+              transform 0.2s ease;
+            font-size: clamp(0.5rem, 1.5vw, 1rem);
           }
 
           .postcard-inner {
-            padding: clamp(1.5rem, 3vw, 2.5rem);
+            padding: clamp(1rem, 3vw, 2.5rem);
             height: 100%;
             display: flex;
             flex-direction: column;
+            box-sizing: border-box;
           }
 
           .postcard-grid {
             display: grid;
             grid-template-columns: repeat(12, minmax(0, 1fr));
-            gap: clamp(1.5rem, 2.75vw, 3rem);
+            gap: clamp(0.75rem, 2.75vw, 3rem);
             align-items: stretch;
-            height: 100%;
+            flex: 1;
+            min-height: 0;
           }
 
           .postcard-info {
             grid-column: span 5;
             display: flex;
             flex-direction: column;
-            gap: clamp(1rem, 2vw, 1.5rem);
+            gap: clamp(0.5rem, 2vw, 1.5rem);
             justify-content: space-between;
             position: relative;
+            overflow: hidden;
+            min-height: 0;
           }
 
           .postcard-map {
@@ -637,7 +642,8 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
             position: relative;
             display: flex;
             flex-direction: column;
-            min-height: clamp(320px, 32vw, 420px);
+            min-height: 0;
+            overflow: hidden;
           }
 
           .postcard-map :global(canvas),
@@ -646,48 +652,29 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
             height: 100%;
           }
 
-          @media (max-width: 1280px) {
-            .postcard-shell {
-              padding-left: clamp(0.5rem, 3vw, 1.5rem);
-              padding-right: clamp(0.5rem, 3vw, 1.5rem);
+          @media (max-width: 750px) {
+            .postcard {
+              aspect-ratio: unset;
+              min-height: auto;
             }
 
             .postcard-grid {
-              grid-template-columns: repeat(1, minmax(0, 1fr));
+              grid-template-columns: 1fr;
+              grid-template-rows: 5fr 7fr;
+              gap: 1.5rem;
             }
 
-            .postcard-info,
+            .postcard-info {
+              grid-column: span 1;
+              order: 1;
+              overflow: visible;
+            }
+
             .postcard-map {
               grid-column: span 1;
-            }
-
-            .postcard-map {
-              order: 1;
-              min-height: clamp(280px, 48vw, 420px);
-            }
-
-            .postcard-info {
               order: 2;
-            }
-          }
-
-          @media (max-width: 768px) {
-            .postcard-inner {
-              padding: clamp(1rem, 6vw, 1.75rem);
-            }
-
-            .postcard-info {
-              gap: clamp(0.75rem, 4vw, 1.25rem);
-            }
-
-            .postcard-map {
-              min-height: clamp(240px, 65vw, 360px);
-            }
-          }
-
-          @media (min-width: 1280px) {
-            .postcard {
-              aspect-ratio: 2 / 1;
+              min-height: 0;
+              aspect-ratio: 1.4 / 1;
             }
           }
 
@@ -701,83 +688,6 @@ export const MosaicPostcard: React.FC<MosaicPostcardProps> = ({
           }
         `}</style>
       </div>
-
-      {/* Action Buttons - Outside the postcard */}
-      {showButtons && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "1rem",
-            marginTop: "2.5rem",
-          }}
-        >
-          <button
-            onClick={handleGradientToggle}
-            style={{
-              padding: "0.5rem 1rem",
-              backgroundColor: theme.colors.backgroundSecondary,
-              border: `1px solid ${theme.colors.border}`,
-              borderRadius: "0.375rem",
-              color: theme.colors.text,
-              cursor: "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "0.5rem",
-              fontSize: theme.fontSizes.sm,
-              transition: "all 0.2s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor =
-                theme.colors.backgroundTertiary;
-              e.currentTarget.style.borderColor = theme.colors.primary;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor =
-                theme.colors.backgroundSecondary;
-              e.currentTarget.style.borderColor = theme.colors.border;
-            }}
-          >
-            <Palette size={14} />
-            {showGradient ? "Hide Gradient" : "Show Gradient"}
-          </button>
-
-          {repoPath && (
-            <a
-              href={`https://github.com/${repoPath}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{
-                padding: "0.5rem 1rem",
-                backgroundColor: theme.colors.backgroundSecondary,
-                border: `1px solid ${theme.colors.border}`,
-                borderRadius: "0.375rem",
-                color: theme.colors.text,
-                cursor: "pointer",
-                display: "flex",
-                alignItems: "center",
-                gap: "0.5rem",
-                fontSize: theme.fontSizes.sm,
-                transition: "all 0.2s ease",
-                textDecoration: "none",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  theme.colors.backgroundTertiary;
-                e.currentTarget.style.borderColor = theme.colors.primary;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor =
-                  theme.colors.backgroundSecondary;
-                e.currentTarget.style.borderColor = theme.colors.border;
-              }}
-            >
-              <Github size={14} />
-              View on GitHub
-            </a>
-          )}
-        </div>
-      )}
     </div>
   );
 };

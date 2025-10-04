@@ -22,7 +22,7 @@ import {
   DEFAULT_FILE_CONFIGS,
 } from "../../../utils/fileColorMapping";
 import { GitHubService } from "../../../services/githubService";
-import { MosaicPostcardClean } from "../../mosaic/components/MosaicPostcardClean";
+import { MosaicPostcard } from "../../mosaic/components/MosaicPostcard";
 
 interface GalleryPageProps {
   params: Promise<{
@@ -393,7 +393,8 @@ function GalleryViewContent({ params }: GalleryPageProps) {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(900px, 1fr))",
+              gridTemplateColumns:
+                "repeat(auto-fill, minmax(min(100%, 750px), 1fr))",
               gap: "2rem",
             }}
           >
@@ -737,7 +738,7 @@ function RepositoryCard({
             }}
             aria-label={`View ${repoPath} mosaic`}
           />
-          <MosaicPostcardClean
+          <MosaicPostcard
             repoPath={repoPath}
             repoStats={repoStats || undefined}
             cityData={cityData}
