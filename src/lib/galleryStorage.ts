@@ -36,6 +36,10 @@ export class GalleryStorage {
       repos,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
+      createdBy: "",
+      createdById: "",
+      createdByLogin: "",
+      allowPublicSubmissions: false,
     };
 
     const galleries = this.getAll();
@@ -89,7 +93,7 @@ export class GalleryStorage {
     );
     if (exists) return gallery;
 
-    gallery.repos.push({ owner, repo });
+    gallery.repos.push({ owner, repo, repoPath: `${owner}/${repo}` });
     return this.update(galleryId, { repos: gallery.repos });
   }
 

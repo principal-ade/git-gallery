@@ -25,16 +25,23 @@ class GalleryS3Store extends S3ClientBase {
     if (!galleries) {
       return [];
     }
-    return galleries;
+    // Ensure repos field exists for all galleries (migration for old galleries)
+    return galleries.map((gallery) => ({
+      ...gallery,
+      repos: gallery.repos || [],
+    }));
   }
 
   async getGallery(id: string): Promise<GalleryRecord> {
-    const gallery = await this.getObject<GalleryRecord>(
-      this.getGalleryKey(id),
-    );
+    const gallery = await this.getObject<GalleryRecord>(this.getGalleryKey(id));
 
     if (!gallery) {
       throw new GalleryNotFoundError(id);
+    }
+
+    // Ensure repos field exists (migration for old galleries)
+    if (!gallery.repos) {
+      gallery.repos = [];
     }
 
     return gallery;
@@ -48,6 +55,7 @@ class GalleryS3Store extends S3ClientBase {
       id,
       name: input.name,
       description: input.description,
+      repos: [],
       createdAt: now,
       updatedAt: now,
       createdBy: input.createdBy,
@@ -91,12 +99,15 @@ class GalleryS3Store extends S3ClientBase {
 let cachedStore: GalleryS3Store | null = null;
 
 export function getGalleryStore(): GalleryS3Store {
-  if (!process.env.S3_GALLERIES_BUCKET) {
+  const bucketName =
+    process.env.S3_GALLERIES_BUCKET || process.env.S3_GIT_MOSAICS;
+
+  if (!bucketName) {
     throw new MissingGalleryBucketError();
   }
 
   if (!cachedStore) {
-    cachedStore = new GalleryS3Store(process.env.S3_GALLERIES_BUCKET);
+    cachedStore = new GalleryS3Store(bucketName);
   }
 
   return cachedStore;

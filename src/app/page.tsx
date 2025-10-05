@@ -368,7 +368,37 @@ function GitGalleryContent() {
               e.currentTarget.style.color = theme.colors.textSecondary;
             }}
           >
-            My Galleries
+            Local Galleries
+          </Link>
+          <Link
+            href="/manage/galleries"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.375rem",
+              backgroundColor: theme.colors.backgroundSecondary,
+              color: theme.colors.textSecondary,
+              padding: "0.5rem 1rem",
+              borderRadius: theme.radius.lg,
+              fontSize: theme.fontSizes.sm,
+              fontWeight: theme.fontWeights.medium,
+              textDecoration: "none",
+              border: `1px solid ${theme.colors.border}`,
+              transition: "all 0.2s ease",
+              cursor: "pointer",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor =
+                theme.colors.backgroundTertiary;
+              e.currentTarget.style.color = theme.colors.text;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor =
+                theme.colors.backgroundSecondary;
+              e.currentTarget.style.color = theme.colors.textSecondary;
+            }}
+          >
+            Create Community Gallery
           </Link>
         </div>
 

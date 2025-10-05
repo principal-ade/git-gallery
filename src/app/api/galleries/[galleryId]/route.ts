@@ -13,12 +13,48 @@ const updateGallerySchema = z.object({
   name: z.string().min(1).optional(),
   description: z.string().max(2000).optional(),
   allowPublicSubmissions: z.boolean().optional(),
+  repos: z
+    .array(
+      z.object({
+        owner: z.string(),
+        repo: z.string(),
+        repoPath: z.string(),
+      }),
+    )
+    .optional(),
 });
+
+export async function GET(
+  request: Request,
+  { params }: { params: Promise<{ galleryId: string }> },
+) {
+  const { galleryId } = await params;
+  try {
+    const store = getGalleryStore();
+    const gallery = await store.getGallery(galleryId);
+    return NextResponse.json({ gallery });
+  } catch (error) {
+    if (error instanceof GalleryNotFoundError) {
+      return NextResponse.json({ error: error.message }, { status: 404 });
+    }
+
+    if (error instanceof MissingGalleryBucketError) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    console.error("Error fetching gallery", error);
+    return NextResponse.json(
+      { error: "Failed to fetch gallery" },
+      { status: 500 },
+    );
+  }
+}
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { galleryId: string } },
+  { params }: { params: Promise<{ galleryId: string }> },
 ) {
+  const { galleryId } = await params;
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -32,10 +68,7 @@ export async function PATCH(
   try {
     body = await request.json();
   } catch (error) {
-    return NextResponse.json(
-      { error: "Invalid JSON body" },
-      { status: 400 },
-    );
+    return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
   }
 
   const parsed = updateGallerySchema.safeParse(body);
@@ -49,7 +82,7 @@ export async function PATCH(
 
   try {
     const store = getGalleryStore();
-    const gallery = await store.updateGallery(params.galleryId, parsed.data);
+    const gallery = await store.updateGallery(galleryId, parsed.data);
     return NextResponse.json({ gallery });
   } catch (error) {
     if (error instanceof GalleryNotFoundError) {
@@ -57,10 +90,7 @@ export async function PATCH(
     }
 
     if (error instanceof MissingGalleryBucketError) {
-      return NextResponse.json(
-        { error: error.message },
-        { status: 500 },
-      );
+      return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
     console.error("Error updating gallery", error);

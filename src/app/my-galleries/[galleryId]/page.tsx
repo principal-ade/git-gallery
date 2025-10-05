@@ -44,10 +44,29 @@ function GalleryViewContent({ params }: GalleryPageProps) {
     loadGallery();
   }, [unwrappedParams.galleryId]);
 
-  const loadGallery = () => {
-    const loaded = GalleryStorage.getById(unwrappedParams.galleryId);
-    setGallery(loaded);
-    setLoading(false);
+  const loadGallery = async () => {
+    setLoading(true);
+    try {
+      // Try fetching from API first (S3-backed galleries)
+      const response = await fetch(
+        `/api/galleries/${unwrappedParams.galleryId}`,
+      );
+      if (response.ok) {
+        const data = await response.json();
+        setGallery(data.gallery);
+      } else {
+        // Fallback to localStorage
+        const loaded = GalleryStorage.getById(unwrappedParams.galleryId);
+        setGallery(loaded);
+      }
+    } catch (error) {
+      console.error("Failed to load gallery:", error);
+      // Fallback to localStorage
+      const loaded = GalleryStorage.getById(unwrappedParams.galleryId);
+      setGallery(loaded);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleAddRepo = async () => {
@@ -87,7 +106,7 @@ function GalleryViewContent({ params }: GalleryPageProps) {
     repo = repo.replace(/\.git$/, "");
 
     // Check if already exists
-    const exists = gallery.repos.some(
+    const exists = gallery.repos?.some(
       (r) => r.owner === owner && r.repo === repo,
     );
     if (exists) {
@@ -130,8 +149,33 @@ function GalleryViewContent({ params }: GalleryPageProps) {
       }
 
       // Validation successful - add the repository
-      GalleryStorage.addRepo(gallery.id, owner, repo);
-      loadGallery();
+      const updatedRepos = [
+        ...(gallery.repos || []),
+        { owner, repo, repoPath: `${owner}/${repo}` },
+      ];
+
+      // Try to update via API first (S3-backed)
+      try {
+        const updateResponse = await fetch(`/api/galleries/${gallery.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ repos: updatedRepos }),
+        });
+
+        if (updateResponse.ok) {
+          await loadGallery();
+        } else {
+          // Fallback to localStorage
+          GalleryStorage.addRepo(gallery.id, owner, repo);
+          await loadGallery();
+        }
+      } catch (error) {
+        // Fallback to localStorage
+        GalleryStorage.addRepo(gallery.id, owner, repo);
+        await loadGallery();
+      }
+
       setShowAddRepoModal(false);
       setNewRepoInput("");
       setValidatingRepo(false);
@@ -144,12 +188,35 @@ function GalleryViewContent({ params }: GalleryPageProps) {
     }
   };
 
-  const handleRemoveRepo = (owner: string, repo: string) => {
+  const handleRemoveRepo = async (owner: string, repo: string) => {
     if (!gallery) return;
 
     if (confirm(`Remove ${owner}/${repo} from this gallery?`)) {
-      GalleryStorage.removeRepo(gallery.id, owner, repo);
-      loadGallery();
+      const updatedRepos = (gallery.repos || []).filter(
+        (r) => !(r.owner === owner && r.repo === repo),
+      );
+
+      // Try to update via API first (S3-backed)
+      try {
+        const updateResponse = await fetch(`/api/galleries/${gallery.id}`, {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+          body: JSON.stringify({ repos: updatedRepos }),
+        });
+
+        if (updateResponse.ok) {
+          await loadGallery();
+        } else {
+          // Fallback to localStorage
+          GalleryStorage.removeRepo(gallery.id, owner, repo);
+          await loadGallery();
+        }
+      } catch (error) {
+        // Fallback to localStorage
+        GalleryStorage.removeRepo(gallery.id, owner, repo);
+        await loadGallery();
+      }
     }
   };
 
@@ -326,8 +393,8 @@ function GalleryViewContent({ params }: GalleryPageProps) {
             color: theme.colors.textMuted,
           }}
         >
-          {gallery.repos.length}{" "}
-          {gallery.repos.length === 1 ? "repository" : "repositories"}
+          {gallery.repos?.length || 0}{" "}
+          {(gallery.repos?.length || 0) === 1 ? "repository" : "repositories"}
         </p>
       </section>
 
@@ -339,7 +406,7 @@ function GalleryViewContent({ params }: GalleryPageProps) {
           padding: "0 1.5rem 4rem",
         }}
       >
-        {gallery.repos.length === 0 ? (
+        {!gallery.repos || gallery.repos.length === 0 ? (
           <div
             style={{
               textAlign: "center",

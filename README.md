@@ -24,7 +24,7 @@ Authentication and gallery management rely on the following environment variable
 
 - `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` – OAuth credentials for GitHub sign-in.
 - `NEXTAUTH_SECRET` – Secret used by NextAuth.js to encrypt session data.
-- `S3_GALLERIES_BUCKET` – S3 bucket that stores gallery metadata (each gallery record is persisted as JSON).
+- `S3_GIT_MOSAICS` – S3 bucket that stores gallery metadata (each gallery record is persisted as JSON under the `galleries/` prefix).
 
 Set these variables in your preferred `.env.local` file before starting the development server to unlock the gallery management experience.
 

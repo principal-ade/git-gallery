@@ -21,9 +21,7 @@ export default function GalleryManager({
   initialError,
   currentUserLogin,
 }: GalleryManagerProps) {
-  const [galleries, setGalleries] = useState<GalleryRecord[]>(
-    initialGalleries,
-  );
+  const [galleries, setGalleries] = useState<GalleryRecord[]>(initialGalleries);
   const [formState, setFormState] = useState<CreateGalleryFormState>({
     name: "",
     description: "",
@@ -65,16 +63,21 @@ export default function GalleryManager({
         }),
       });
 
-      const data = (await response.json().catch(() => null)) as
-        | { gallery: GalleryRecord; error?: string }
-        | null;
+      const data = (await response.json().catch(() => null)) as {
+        gallery: GalleryRecord;
+        error?: string;
+      } | null;
 
       if (!response.ok || !data?.gallery) {
         throw new Error(data?.error || "Failed to create gallery");
       }
 
       setGalleries((current) => [data.gallery, ...current]);
-      setFormState({ name: "", description: "", allowPublicSubmissions: false });
+      setFormState({
+        name: "",
+        description: "",
+        allowPublicSubmissions: false,
+      });
       setActionMessage(`Gallery “${data.gallery.name}” created successfully`);
     } catch (error) {
       setErrorMessage(error instanceof Error ? error.message : String(error));
@@ -98,9 +101,10 @@ export default function GalleryManager({
         body: JSON.stringify({ allowPublicSubmissions }),
       });
 
-      const data = (await response.json().catch(() => null)) as
-        | { gallery: GalleryRecord; error?: string }
-        | null;
+      const data = (await response.json().catch(() => null)) as {
+        gallery: GalleryRecord;
+        error?: string;
+      } | null;
 
       if (!response.ok || !data?.gallery) {
         throw new Error(data?.error || "Failed to update gallery");
@@ -249,6 +253,50 @@ export default function GalleryManager({
                       Owner: {gallery.createdBy || "Unknown"} (
                       {gallery.createdByLogin || "unknown"})
                     </p>
+                    <div className="flex items-center gap-2 mt-3">
+                      <a
+                        href={`/my-galleries/${gallery.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-blue-400 hover:text-blue-300 underline"
+                      >
+                        {typeof window !== "undefined"
+                          ? `${window.location.origin}/my-galleries/${gallery.id}`
+                          : `/my-galleries/${gallery.id}`}
+                      </a>
+                      <button
+                        onClick={() => {
+                          const url = `${window.location.origin}/my-galleries/${gallery.id}`;
+                          navigator.clipboard.writeText(url);
+                          setActionMessage("Gallery link copied to clipboard!");
+                          setTimeout(() => setActionMessage(null), 3000);
+                        }}
+                        className="text-gray-400 hover:text-white transition"
+                        title="Copy link"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <rect
+                            x="9"
+                            y="9"
+                            width="13"
+                            height="13"
+                            rx="2"
+                            ry="2"
+                          ></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex flex-col items-start gap-3">
