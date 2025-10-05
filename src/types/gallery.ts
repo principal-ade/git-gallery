@@ -1,17 +1,40 @@
-export interface GalleryRepo {
-  owner: string;
-  repo: string;
-}
-
-export interface Gallery {
+export interface GalleryRecord {
   id: string;
   name: string;
   description?: string;
-  repos: GalleryRepo[];
   createdAt: string;
   updatedAt: string;
+  createdBy: string;
+  createdById: string;
+  createdByLogin: string;
+  allowPublicSubmissions: boolean;
 }
 
-export interface GalleriesState {
-  galleries: Gallery[];
+export interface GalleryCreateInput {
+  name: string;
+  description?: string;
+  allowPublicSubmissions: boolean;
+  createdBy: string;
+  createdById: string;
+  createdByLogin: string;
+}
+
+export interface GalleryUpdateInput {
+  name?: string;
+  description?: string;
+  allowPublicSubmissions?: boolean;
+}
+
+export class GalleryNotFoundError extends Error {
+  constructor(public readonly galleryId: string) {
+    super(`Gallery with id ${galleryId} was not found`);
+    this.name = "GalleryNotFoundError";
+  }
+}
+
+export class MissingGalleryBucketError extends Error {
+  constructor() {
+    super("S3_GALLERIES_BUCKET environment variable is not configured");
+    this.name = "MissingGalleryBucketError";
+  }
 }

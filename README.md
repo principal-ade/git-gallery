@@ -18,6 +18,16 @@ npm run dev
 
 Open [http://localhost:3002](http://localhost:3002) with your browser to see the result.
 
+## Configuration
+
+Authentication and gallery management rely on the following environment variables:
+
+- `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` – OAuth credentials for GitHub sign-in.
+- `NEXTAUTH_SECRET` – Secret used by NextAuth.js to encrypt session data.
+- `S3_GALLERIES_BUCKET` – S3 bucket that stores gallery metadata (each gallery record is persisted as JSON).
+
+Set these variables in your preferred `.env.local` file before starting the development server to unlock the gallery management experience.
+
 ## Tech Stack
 
 - Next.js 15
@@ -33,6 +43,7 @@ Open [http://localhost:3002](http://localhost:3002) with your browser to see the
 - **PR & Release Comparison**: Visual comparison of pull requests and releases
 - **City Planning View**: Alternative architectural visualization
 - **Gallery**: Browse and explore multiple repositories
+- **Gallery Management**: Create and configure hackathon galleries with GitHub authentication and S3-backed storage
 - **Color Palette**: Customizable file type color schemes
 
 ## Project Structure
